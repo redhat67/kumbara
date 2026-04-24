@@ -27,6 +27,16 @@ go run main.go
 
 Tarayıcınızda `http://localhost:8080` adresine gidin.
 
+### Smart Contract Deploy
+
+Soroban kontratını deploy etmek için [DEPLOY.md](DEPLOY.md) dosyasına bakın.
+
+```bash
+cd contract
+cargo build --target wasm32-unknown-unknown --release
+soroban contract deploy --wasm target/wasm32-unknown-unknown/release/kumbara_contract.wasm --network testnet
+```
+
 ## 📖 Kullanım
 
 1. **Ağ Seçimi**: Testnet veya Mainnet seçin
@@ -45,6 +55,7 @@ Tarayıcınızda `http://localhost:8080` adresine gidin.
 
 - **Backend**: Go
 - **Frontend**: HTML, CSS, Vanilla JavaScript
+- **Smart Contract**: Rust + Soroban
 - **Blockchain**: Stellar Network
 - **Wallet**: Freighter API
 - **SDK**: Stellar SDK
@@ -58,6 +69,11 @@ stellar-piggybank/
 ├── static/
 │   ├── index.html    # Ana sayfa
 │   └── styles.css    # Stil dosyası
+├── contract/         # Soroban smart contract
+│   ├── src/
+│   │   └── lib.rs    # Kumbara kontratı
+│   └── Cargo.toml    # Rust dependencies
+├── DEPLOY.md         # Deploy rehberi
 └── README.md         # Bu dosya
 ```
 
@@ -77,9 +93,22 @@ Gri tonlarında modern ve minimalist bir banka arayüzü. Gradient arka planlar,
 - Testnet tamamen ücretsizdir ve test amaçlıdır
 - Freighter uzantısı yüklü olmalıdır
 
+## 📜 Smart Contract Özellikleri
+
+Soroban ile yazılmış kumbara kontratı:
+
+- ✅ Kumbara oluşturma (hedef belirleme)
+- ✅ Para yatırma
+- ✅ Para çekme
+- ✅ Bakiye sorgulama
+- ✅ Hedefe ulaşma kontrolü
+- ✅ Kullanıcı bazlı kumbara yönetimi
+
+Detaylı deploy bilgileri için [DEPLOY.md](DEPLOY.md) dosyasına bakın.
+
 ## 🌟 Stellar Hakkında
 
-Stellar, hızlı ve düşük maliyetli uluslararası para transferleri için tasarlanmış açık kaynaklı bir blockchain ağıdır.
+Stellar, hızlı ve düşük maliyetli uluslararası para transferleri için tasarlanmış açık kaynaklı bir blockchain ağıdır. Soroban, Stellar'ın akıllı kontrat platformudur.
 
 ---
 
