@@ -1,86 +1,85 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, Address, Env};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, String, Vec};
 
 #[contracttype]
 #[derive(Clone)]
-pub struct Kumbara {
-    pub owner: Address,
-    pub balance: i128,
-    pub goal: i128,
+pub struct BreachRecord {
+    pub hash: String,
+    pub platform: String,
+    pub breach_date: u64,
+    pub record_count: u32,
 }
 
 #[contract]
-pub struct KumbaraContract;
+pub struct BreachCheckerContract;
 
 #[contractimpl]
-impl KumbaraContract {
-    /// Yeni kumbara oluştur
-    pub fn initialize(env: Env, owner: Address, goal: i128) -> Kumbara {
-        owner.require_auth();
-        
-        let kumbara = Kumbara {
-            owner: owner.clone(),
-            balance: 0,
-            goal,
+impl BreachCheckerContract {
+    /// Initialize contract with admin
+    pub fn initialize(env: Env, admin: Address) {
+        admin.require_auth();
+        env.storage().instance().set(&symbol_short!("admin"), &admin);
+    }
+
+    /// Add a breach record (admin only)
+    pub fn add_breach(
+        env: Env,
+        hash: String,
+        platform: String,
+        breach_date: u64,
+        record_count: u32,
+    ) -> bool {
+        let admin: Address = env.storage().instance().get(&symbol_short!("admin")).unwrap();
+        admin.require_auth();
+
+        let breach = BreachRecord {
+            hash: hash.clone(),
+            platform,
+            breach_date,
+            record_count,
         };
-        
-        env.storage().instance().set(&owner, &kumbara);
-        kumbara
+
+        env.storage().persistent().set(&hash, &breach);
+        true
     }
 
-    /// Kumbaraya para yatır
-    pub fn deposit(env: Env, owner: Address, amount: i128) -> i128 {
-        owner.require_auth();
-        
-        let mut kumbara: Kumbara = env.storage().instance().get(&owner).unwrap();
-        kumbara.balance += amount;
-        
-        env.storage().instance().set(&owner, &kumbara);
-        kumbara.balance
+    /// Check if a hash exists in breach database
+    pub fn check_breach(env: Env, hash: String) -> bool {
+        env.storage().persistent().has(&hash)
     }
 
-    /// Kumbaradan para çek
-    pub fn withdraw(env: Env, owner: Address, amount: i128) -> i128 {
-        owner.require_auth();
-        
-        let mut kumbara: Kumbara = env.storage().instance().get(&owner).unwrap();
-        
-        if kumbara.balance >= amount {
-            kumbara.balance -= amount;
-            env.storage().instance().set(&owner, &kumbara);
-        }
-        
-        kumbara.balance
+    /// Get breach information for a hash
+    pub fn get_breach_info(env: Env, hash: String) -> Option<BreachRecord> {
+        env.storage().persistent().get(&hash)
     }
 
-    /// Bakiye sorgula
-    pub fn get_balance(env: Env, owner: Address) -> i128 {
-        let kumbara: Kumbara = env.storage().instance().get(&owner).unwrap_or(Kumbara {
-            owner: owner.clone(),
-            balance: 0,
-            goal: 0,
-        });
-        kumbara.balance
+    /// Check if data is compromised (alias for check_breach)
+    pub fn is_compromised(env: Env, hash: String) -> bool {
+        Self::check_breach(env, hash)
     }
 
-    /// Hedef sorgula
-    pub fn get_goal(env: Env, owner: Address) -> i128 {
-        let kumbara: Kumbara = env.storage().instance().get(&owner).unwrap_or(Kumbara {
-            owner: owner.clone(),
-            balance: 0,
-            goal: 0,
-        });
-        kumbara.goal
+    /// Get total breach count (stored separately)
+    pub fn get_breach_count(env: Env) -> u32 {
+        env.storage()
+            .instance()
+            .get(&symbol_short!("count"))
+            .unwrap_or(0)
     }
 
-    /// Hedefe ulaşıldı mı?
-    pub fn is_goal_reached(env: Env, owner: Address) -> bool {
-        let kumbara: Kumbara = env.storage().instance().get(&owner).unwrap_or(Kumbara {
-            owner: owner.clone(),
-            balance: 0,
-            goal: 0,
-        });
-        kumbara.balance >= kumbara.goal
+    /// Increment breach count (admin only)
+    pub fn increment_count(env: Env) {
+        let admin: Address = env.storage().instance().get(&symbol_short!("admin")).unwrap();
+        admin.require_auth();
+
+        let current: u32 = Self::get_breach_count(env.clone());
+        env.storage()
+            .instance()
+            .set(&symbol_short!("count"), &(current + 1));
+    }
+
+    /// Get admin address
+    pub fn get_admin(env: Env) -> Address {
+        env.storage().instance().get(&symbol_short!("admin")).unwrap()
     }
 }
 
@@ -90,34 +89,35 @@ mod test {
     use soroban_sdk::testutils::Address as _;
 
     #[test]
-    fn test_kumbara() {
+    fn test_breach_checker() {
         let env = Env::default();
-        let contract_id = env.register_contract(None, KumbaraContract);
-        let client = KumbaraContractClient::new(&env, &contract_id);
+        let contract_id = env.register_contract(None, BreachCheckerContract);
+        let client = BreachCheckerContractClient::new(&env, &contract_id);
 
-        let owner = Address::generate(&env);
+        let admin = Address::generate(&env);
         
-        // Initialize
         env.mock_all_auths();
-        let kumbara = client.initialize(&owner, &1000);
-        assert_eq!(kumbara.balance, 0);
-        assert_eq!(kumbara.goal, 1000);
 
-        // Deposit
-        let balance = client.deposit(&owner, &500);
-        assert_eq!(balance, 500);
+        // Initialize
+        client.initialize(&admin);
 
-        // Check goal
-        let reached = client.is_goal_reached(&owner);
-        assert_eq!(reached, false);
+        // Add breach
+        let hash = String::from_str(&env, "abc123hash");
+        let platform = String::from_str(&env, "TestPlatform");
+        let result = client.add_breach(&hash, &platform, &1234567890, &1000);
+        assert_eq!(result, true);
 
-        // Deposit more
-        client.deposit(&owner, &600);
-        let reached = client.is_goal_reached(&owner);
-        assert_eq!(reached, true);
+        // Check breach
+        let is_breached = client.check_breach(&hash);
+        assert_eq!(is_breached, true);
 
-        // Withdraw
-        let balance = client.withdraw(&owner, &200);
-        assert_eq!(balance, 900);
+        // Get breach info
+        let info = client.get_breach_info(&hash);
+        assert!(info.is_some());
+
+        // Check non-existent hash
+        let safe_hash = String::from_str(&env, "safehash");
+        let is_safe = client.check_breach(&safe_hash);
+        assert_eq!(is_safe, false);
     }
 }

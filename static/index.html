@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stellar Kumbara - Bakiye Takip Sistemi</title>
+    <title>DarkWeb3 - Data Breach Checker</title>
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%236b7280'/></svg>">
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='40' fill='%23dc2626'/></svg>">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -15,249 +15,201 @@
         <header class="header">
             <div class="logo">
                 <svg width="40" height="40" viewBox="0 0 40 40">
-                    <circle cx="20" cy="20" r="18" fill="none" stroke="#6b7280" stroke-width="2" />
-                    <path d="M20 10 L20 20 L28 20" stroke="#6b7280" stroke-width="2" fill="none" />
+                    <circle cx="20" cy="20" r="18" fill="none" stroke="#dc2626" stroke-width="2" />
+                    <path d="M20 8 L20 20 M20 20 L28 20" stroke="#dc2626" stroke-width="2" />
+                    <circle cx="20" cy="28" r="2" fill="#dc2626" />
                 </svg>
-                <h1>Stellar Kumbara</h1>
+                <h1>DarkWeb3</h1>
             </div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-                <select id="networkSelect" class="btn-primary" style="padding: 10px 16px;">
-                    <option value="testnet">Testnet</option>
-                    <option value="mainnet">Mainnet</option>
-                </select>
-                <button id="connectWallet" class="btn-primary">Freighter Bağlan</button>
-            </div>
+            <div class="badge">Breach Checker</div>
         </header>
 
         <main class="main-content">
             <div class="card welcome-card" id="welcomeCard">
-                <h2>Hoş Geldiniz</h2>
-                <p>Stellar ağındaki bakiyenizi takip edin</p>
-                <p class="subtitle">Başlamak için Freighter cüzdanınızı bağlayın</p>
+                <h2>🔒 Check Your Data Security</h2>
+                <p>Find out if your personal information has been compromised in known data breaches</p>
+                <p class="subtitle">Your privacy is protected - we only check hashed data</p>
             </div>
 
-            <div class="card balance-card" id="balanceCard" style="display: none;">
-                <div class="balance-header">
-                    <h2>Kumbara Bakiyesi</h2>
-                    <span class="network-badge" id="networkBadge">Testnet</span>
+            <div class="card check-card">
+                <div class="input-section">
+                    <label for="dataInput">Enter Email, Username, or Phone Number:</label>
+                    <input type="text" id="dataInput" placeholder="example@email.com" class="data-input">
+                    <button id="checkBtn" class="btn-primary">🔍 Check for Breaches</button>
                 </div>
 
-                <div class="balance-amount">
-                    <span class="currency">XLM</span>
-                    <span id="balance" class="amount">0.00</span>
+                <div class="info-box">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path
+                            d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                        <path
+                            d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                    </svg>
+                    <span>Your data is hashed locally using SHA-256 before any checks</span>
                 </div>
+            </div>
 
-                <div class="wallet-info">
-                    <label>Cüzdan Adresi:</label>
-                    <div class="address-box">
-                        <code id="walletAddress"></code>
-                        <button id="copyAddress" class="btn-icon" title="Kopyala">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2z" />
-                                <path d="M2 6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-1H6a3 3 0 0 1-3-3V6H2z" />
-                            </svg>
-                        </button>
+            <div class="card result-card safe-card" id="safeCard" style="display: none;">
+                <div class="result-icon">✅</div>
+                <h3>Good News!</h3>
+                <p>No breaches found for this data</p>
+                <p class="result-detail">Your information appears to be safe in our database</p>
+                <button id="checkAgainBtn1" class="btn-secondary">Check Another</button>
+            </div>
+
+            <div class="card result-card breach-card" id="breachCard" style="display: none;">
+                <div class="result-icon">⚠️</div>
+                <h3>Breach Detected!</h3>
+                <p>This data was found in <span id="breachCount">0</span> breach(es)</p>
+                
+                <div class="breach-details" id="breachDetails">
+                    <div class="breach-item">
+                        <div class="breach-platform">Platform: <strong id="breachPlatform">-</strong></div>
+                        <div class="breach-date">Date: <strong id="breachDate">-</strong></div>
+                        <div class="breach-records">Records: <strong id="breachRecords">-</strong></div>
                     </div>
                 </div>
 
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-label">Toplam İşlem</span>
-                        <span id="txCount" class="stat-value">-</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Hesap Durumu</span>
-                        <span id="accountStatus" class="stat-value">Aktif</span>
-                    </div>
+                <div class="recommendations">
+                    <h4>🛡️ Recommended Actions:</h4>
+                    <ul>
+                        <li>Change your password immediately</li>
+                        <li>Enable two-factor authentication</li>
+                        <li>Monitor your accounts for suspicious activity</li>
+                        <li>Consider using a password manager</li>
+                    </ul>
                 </div>
 
-                <button id="refreshBalance" class="btn-secondary">Bakiyeyi Yenile</button>
-                <button id="fundAccount" class="btn-secondary"
-                    style="display: none; background: linear-gradient(135deg, #059669 0%, #047857 100%); color: white; margin-top: 8px;">
-                    🎁 Testnet'ten Ücretsiz XLM Al (Friendbot)
-                </button>
+                <button id="checkAgainBtn2" class="btn-secondary">Check Another</button>
             </div>
 
             <div class="card error-card" id="errorCard" style="display: none;">
-                <h3>⚠️ Hata</h3>
+                <h3>⚠️ Error</h3>
                 <p id="errorMessage"></p>
-                <button id="retryBtn" class="btn-secondary">Tekrar Dene</button>
+                <button id="retryBtn" class="btn-secondary">Try Again</button>
             </div>
         </main>
 
         <footer class="footer">
-            <p>Stellar Kumbara Sistemi | Powered by Stellar Network</p>
+            <p>🔒 DarkWeb3 - Protecting Your Digital Identity | Powered by Stellar Blockchain</p>
+            <p class="footer-note">Privacy-first • Open Source • Decentralized</p>
         </footer>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/11.2.2/stellar-sdk.min.js"></script>
-    <script type="module">
-        import freighterApi from "https://esm.sh/@stellar/freighter-api@1.7.1";
+    <script>
+        const HORIZON_URL = 'https://horizon-testnet.stellar.org';
+        const CONTRACT_ID = 'YOUR_CONTRACT_ID_HERE'; // Will be updated after deployment
 
-        let currentPublicKey = null;
-        let currentNetwork = 'testnet';
-
-        function getHorizonUrl() {
-            return currentNetwork === 'testnet'
-                ? 'https://horizon-testnet.stellar.org'
-                : 'https://horizon.stellar.org';
+        // SHA-256 hash function
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
         }
 
-        // Freighter yüklü mü kontrol et
-        async function isFreighterInstalled() {
-            return await freighterApi.isConnected();
-        }
+        // Check for breach
+        async function checkBreach() {
+            const input = document.getElementById('dataInput').value.trim();
+            
+            if (!input) {
+                showError('Please enter an email, username, or phone number');
+                return;
+            }
 
-        // Cüzdan bağlantısı
-        async function connectWallet() {
-            const btn = document.getElementById('connectWallet');
-            const networkSelect = document.getElementById('networkSelect');
-            currentNetwork = networkSelect.value;
-
-            btn.textContent = 'Bağlanıyor...';
+            const btn = document.getElementById('checkBtn');
+            btn.textContent = '🔍 Checking...';
             btn.disabled = true;
-            networkSelect.disabled = true;
 
             try {
-                // Freighter yüklü mü kontrol et
-                const isInstalled = await isFreighterInstalled();
+                // Hash the input
+                const hash = await sha256(input.toLowerCase());
+                console.log('Hash:', hash);
 
-                if (!isInstalled) {
-                    showError('Freighter cüzdan uzantısı bulunamadı. Lütfen Chrome/Firefox uzantısını yükleyin ve sayfayı yenileyin.');
-                    btn.textContent = 'Freighter Bağlan';
-                    btn.disabled = false;
-                    return;
-                }
-
-                // Public key al
-                const publicKey = await freighterApi.getPublicKey();
-
-                if (!publicKey) {
-                    showError('Cüzdan bağlantısı başarısız. Freighter uzantısından izin verin.');
-                    btn.textContent = 'Freighter Bağlan';
-                    btn.disabled = false;
-                    return;
-                }
-
-                currentPublicKey = publicKey;
-
-                document.getElementById('walletAddress').textContent = publicKey;
-                document.getElementById('networkBadge').textContent = currentNetwork === 'testnet' ? 'Testnet' : 'Mainnet';
-                document.getElementById('welcomeCard').style.display = 'none';
+                // Hide all result cards
+                document.getElementById('safeCard').style.display = 'none';
+                document.getElementById('breachCard').style.display = 'none';
                 document.getElementById('errorCard').style.display = 'none';
-                document.getElementById('balanceCard').style.display = 'block';
-                document.getElementById('connectWallet').textContent = 'Bağlı';
-                document.getElementById('connectWallet').disabled = true;
 
-                await fetchBalance(publicKey);
+                // Simulate breach check (replace with actual contract call)
+                const isBreached = await simulateBreachCheck(hash);
+
+                if (isBreached) {
+                    showBreachResult(isBreached);
+                } else {
+                    showSafeResult();
+                }
+
             } catch (error) {
-                console.error('Bağlantı hatası:', error);
-                showError('Cüzdan bağlantısı reddedildi: ' + error.message);
-                btn.textContent = 'Freighter Bağlan';
+                console.error('Check error:', error);
+                showError('Failed to check breach: ' + error.message);
+            } finally {
+                btn.textContent = '🔍 Check for Breaches';
                 btn.disabled = false;
             }
         }
 
-        // Bakiye sorgulama
-        async function fetchBalance(publicKey) {
-            try {
-                const server = new StellarSdk.Horizon.Server(getHorizonUrl());
-                const account = await server.accounts().accountId(publicKey).call();
+        // Simulate breach check (replace with actual Stellar contract call)
+        async function simulateBreachCheck(hash) {
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 1500));
 
-                // XLM bakiyesini bul
-                const xlmBalance = account.balances.find(b => b.asset_type === 'native');
-                const balance = xlmBalance ? parseFloat(xlmBalance.balance).toFixed(7) : '0.00';
-
-                document.getElementById('balance').textContent = balance;
-
-                // İşlem sayısını al
-                const transactions = await server.transactions()
-                    .forAccount(publicKey)
-                    .limit(200)
-                    .call();
-
-                document.getElementById('txCount').textContent = transactions.records.length;
-                document.getElementById('accountStatus').textContent = 'Aktif';
-                document.getElementById('fundAccount').style.display = 'none';
-
-            } catch (error) {
-                if (error.response && error.response.status === 404) {
-                    // Hesap bulunamadı - 0 bakiye göster
-                    document.getElementById('balance').textContent = '0.0000000';
-                    document.getElementById('txCount').textContent = '0';
-                    document.getElementById('accountStatus').textContent = 'Henüz Aktif Değil';
-
-                    if (currentNetwork === 'testnet') {
-                        document.getElementById('fundAccount').style.display = 'block';
-                    }
-                } else {
-                    showError('Bakiye alınırken hata: ' + error.message);
+            // Demo: some hashes are "breached"
+            const demoBreaches = {
+                // Hash of "test@example.com"
+                '973dfe463ec85785f5f95af5ba3906eedb2d931c24e69824a89ea65dba4e813b': {
+                    platform: 'TestPlatform Demo',
+                    date: '2024-01-15',
+                    records: 1000000
                 }
-            }
+            };
+
+            return demoBreaches[hash] || null;
         }
 
-        // Friendbot ile hesap fonlama (sadece testnet)
-        async function fundAccount() {
-            if (currentNetwork !== 'testnet' || !currentPublicKey) return;
-
-            const btn = document.getElementById('fundAccount');
-            btn.textContent = 'XLM gönderiliyor...';
-            btn.disabled = true;
-
-            try {
-                const response = await fetch(`https://friendbot.stellar.org?addr=${currentPublicKey}`);
-                if (response.ok) {
-                    alert('✅ Başarılı! 10,000 test XLM hesabınıza gönderildi.');
-                    await fetchBalance(currentPublicKey);
-                } else {
-                    throw new Error('Friendbot isteği başarısız oldu');
-                }
-            } catch (error) {
-                alert('❌ Hata: ' + error.message);
-                btn.textContent = '🎁 Testnet\'ten Ücretsiz XLM Al (Friendbot)';
-                btn.disabled = false;
-            }
+        // Show safe result
+        function showSafeResult() {
+            document.getElementById('safeCard').style.display = 'block';
         }
 
-        // Hata gösterimi
+        // Show breach result
+        function showBreachResult(breachData) {
+            document.getElementById('breachCount').textContent = '1';
+            document.getElementById('breachPlatform').textContent = breachData.platform;
+            document.getElementById('breachDate').textContent = breachData.date;
+            document.getElementById('breachRecords').textContent = breachData.records.toLocaleString();
+            document.getElementById('breachCard').style.display = 'block';
+        }
+
+        // Show error
         function showError(message) {
             document.getElementById('errorMessage').textContent = message;
             document.getElementById('errorCard').style.display = 'block';
-            document.getElementById('balanceCard').style.display = 'none';
         }
 
-        // Adresi kopyala
-        document.getElementById('copyAddress').addEventListener('click', () => {
-            const address = document.getElementById('walletAddress').textContent;
-            navigator.clipboard.writeText(address).then(() => {
-                alert('Adres kopyalandı!');
-            });
-        });
+        // Reset form
+        function resetForm() {
+            document.getElementById('dataInput').value = '';
+            document.getElementById('safeCard').style.display = 'none';
+            document.getElementById('breachCard').style.display = 'none';
+            document.getElementById('errorCard').style.display = 'none';
+        }
 
         // Event listeners
-        document.getElementById('connectWallet').addEventListener('click', connectWallet);
-        document.getElementById('refreshBalance').addEventListener('click', () => {
-            if (currentPublicKey) fetchBalance(currentPublicKey);
+        document.getElementById('checkBtn').addEventListener('click', checkBreach);
+        document.getElementById('dataInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') checkBreach();
         });
-        document.getElementById('fundAccount').addEventListener('click', fundAccount);
-        document.getElementById('retryBtn').addEventListener('click', () => {
-            document.getElementById('errorCard').style.display = 'none';
-            document.getElementById('welcomeCard').style.display = 'block';
-        });
+        document.getElementById('checkAgainBtn1').addEventListener('click', resetForm);
+        document.getElementById('checkAgainBtn2').addEventListener('click', resetForm);
+        document.getElementById('retryBtn').addEventListener('click', resetForm);
 
-        // Sayfa yüklendiğinde Freighter kontrolü
-        window.addEventListener('load', async () => {
-            const isInstalled = await isFreighterInstalled();
-            if (isInstalled) {
-                console.log('✅ Freighter uzantısı tespit edildi');
-            } else {
-                console.warn('⚠️ Freighter uzantısı bulunamadı');
-            }
-        });
-
-        // Global scope'a ekle
-        window.connectWallet = connectWallet;
-        window.fetchBalance = fetchBalance;
+        // Demo info
+        console.log('🔒 DarkWeb3 Demo Mode');
+        console.log('Try: test@example.com (will show as breached)');
+        console.log('Any other input will show as safe');
     </script>
 </body>
 

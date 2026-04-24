@@ -1,31 +1,31 @@
-# 🐷 Stellar Kumbara
+# 🔒 DarkWeb3 - Data Breach Checker
 
-Stellar ağındaki XLM bakiyenizi takip etmek için şık ve minimalist bir kumbara uygulaması.
+A decentralized data breach monitoring system built on Stellar blockchain. Check if your personal information has been compromised in known data breaches.
 
-## ✨ Özellikler
+## ✨ Features
 
-- 🔐 **Freighter Cüzdan Entegrasyonu** - Güvenli cüzdan bağlantısı
-- 🌐 **Testnet & Mainnet Desteği** - İstediğiniz ağı seçin
-- 💰 **Gerçek Zamanlı Bakiye** - XLM bakiyenizi anında görün
-- 🎁 **Friendbot Desteği** - Testnet'te ücretsiz XLM alın
-- 📊 **İşlem Geçmişi** - Toplam işlem sayınızı görün
-- 🎨 **Modern Tasarım** - Gri tonlarında şık banka arayüzü
-- 📱 **Responsive** - Mobil ve masaüstünde mükemmel çalışır
+- 🔐 **Privacy-First** - Only hashed data is stored and checked
+- 🌐 **Blockchain-Based** - Immutable breach records on Stellar
+- 🔍 **Instant Check** - Real-time breach detection
+- 📊 **Breach History** - See which breaches affected you
+- 🛡️ **Security Alerts** - Get notified about compromised data
+- 🎨 **Dark Theme** - Cybersecurity-focused UI
+- 📱 **Responsive** - Works on all devices
 
-## 🚀 Kurulum
+## 🚀 Installation
 
-### Gereksinimler
+### Requirements
 
-- Go 1.21 veya üzeri
-- [Freighter Wallet](https://www.freighter.app/) tarayıcı uzantısı
+- Go 1.21 or higher
+- Modern web browser
 
-### Çalıştırma
+### Running
 
 ```bash
 go run main.go
 ```
 
-Tarayıcınızda `http://localhost:8080` adresine gidin.
+Open `http://localhost:8080` in your browser.
 
 ### Smart Contract Deploy
 
@@ -52,45 +52,45 @@ soroban contract deploy \
   --network testnet
 ```
 
-## 📖 Kullanım
+## 📖 Usage
 
-1. **Ağ Seçimi**: Testnet veya Mainnet seçin
-2. **Cüzdan Bağlantısı**: "Freighter Bağlan" butonuna tıklayın
-3. **İzin Verin**: Freighter popup'ında izin verin
-4. **Bakiyenizi Görün**: XLM bakiyeniz ve işlem geçmişiniz görüntülenecek
+1. **Enter Your Data**: Input email, username, or phone number
+2. **Check Breach**: Click "Check for Breaches"
+3. **View Results**: See if your data was compromised
+4. **Get Details**: View breach dates and affected platforms
 
-### Testnet'te Test Etme
+### How It Works
 
-1. Testnet seçin
-2. Cüzdanınızı bağlayın
-3. "🎁 Testnet'ten Ücretsiz XLM Al" butonuna tıklayın
-4. 10,000 test XLM otomatik olarak hesabınıza gelecek
+1. Your input is hashed using SHA-256 (never stored in plain text)
+2. Hash is checked against blockchain breach records
+3. Results show breach information without exposing actual data
+4. You get actionable security recommendations
 
-## 🛠️ Teknolojiler
+## 🛠️ Technologies
 
 - **Backend**: Go
 - **Frontend**: HTML, CSS, Vanilla JavaScript
 - **Smart Contract**: Rust + Soroban
 - **Blockchain**: Stellar Network
-- **Wallet**: Freighter API
+- **Hashing**: SHA-256
 - **SDK**: Stellar SDK
 
-## 📁 Proje Yapısı
+## 📁 Project Structure
 
 ```
-stellar-piggybank/
-├── main.go              # Go web sunucusu
-├── go.mod               # Go modül dosyası
+darkweb3/
+├── main.go              # Go web server
+├── go.mod               # Go module file
 ├── static/
-│   ├── index.html       # Ana sayfa
-│   └── styles.css       # Stil dosyası
+│   ├── index.html       # Main page
+│   └── styles.css       # Stylesheet
 ├── contract/            # Soroban smart contract
 │   ├── src/
-│   │   └── lib.rs       # Kumbara kontratı (Rust)
+│   │   └── lib.rs       # Breach checker contract (Rust)
 │   └── Cargo.toml       # Rust dependencies
-├── DEPLOY.md            # Genel deploy rehberi
-├── DEPLOYMENT_INFO.md   # Detaylı deployment bilgileri
-└── README.md            # Bu dosya
+├── DEPLOY.md            # Deployment guide
+├── DEPLOYMENT_INFO.md   # Detailed deployment info
+└── README.md            # This file
 ```
 
 ## 🎨 Tasarım
@@ -103,42 +103,49 @@ Gri tonlarında modern ve minimalist bir banka arayüzü. Gradient arka planlar,
 - Tüm işlemler Freighter uzantısı üzerinden yapılır
 - Sadece okuma izni kullanılır (bakiye görüntüleme)
 
-## 📝 Notlar
+## 📝 Important Notes
 
-- Mainnet'te hesap aktifleştirmek için minimum 1 XLM gerekir
-- Testnet tamamen ücretsizdir ve test amaçlıdır
-- Freighter uzantısı yüklü olmalıdır
-- Smart contract deploy için Visual Studio Build Tools (Windows) veya GCC (Linux/Mac) gerekir
-- Kontrat tutarları stroops cinsinden (1 XLM = 10,000,000 stroops)
+- **Privacy**: Only SHA-256 hashes are stored, never plain text data
+- **Legal**: This tool helps users protect themselves, similar to haveibeenpwned.com
+- **Ethical**: No actual leaked data is stored or displayed
+- **Testnet**: Free for testing purposes
+- **Security**: All checks are done client-side before hashing
 
-## 📜 Smart Contract Özellikleri
+## 📜 Smart Contract Features
 
-Soroban ile yazılmış kumbara kontratı:
+Soroban-based breach checker contract:
 
-- ✅ Kumbara oluşturma (hedef belirleme)
-- ✅ Para yatırma
-- ✅ Para çekme
-- ✅ Bakiye sorgulama
-- ✅ Hedefe ulaşma kontrolü
-- ✅ Kullanıcı bazlı kumbara yönetimi
+- ✅ Store breach records (hashed data only)
+- ✅ Check if data is compromised
+- ✅ Record breach metadata (date, platform)
+- ✅ Query breach history
+- ✅ Privacy-preserving verification
+- ✅ Immutable breach records
 
-**Kontrat Fonksiyonları:**
-- `initialize(owner, goal)` - Yeni kumbara oluştur
-- `deposit(owner, amount)` - Para yatır
-- `withdraw(owner, amount)` - Para çek
-- `get_balance(owner)` - Bakiye sorgula
-- `get_goal(owner)` - Hedef sorgula
-- `is_goal_reached(owner)` - Hedefe ulaşıldı mı?
+**Contract Functions:**
+- `add_breach(hash, platform, date)` - Add breach record (admin only)
+- `check_breach(hash)` - Check if data is compromised
+- `get_breach_info(hash)` - Get breach details
+- `get_breach_count()` - Total breaches recorded
+- `is_compromised(hash)` - Quick breach check
 
-Detaylı deploy bilgileri için [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md) dosyasına bakın.
+For detailed deployment info, see [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md).
 
-## 🌟 Stellar Hakkında
+## 🔐 Security & Privacy
 
-Stellar, hızlı ve düşük maliyetli uluslararası para transferleri için tasarlanmış açık kaynaklı bir blockchain ağıdır. Soroban, Stellar'ın akıllı kontrat platformudur.
+- All data is hashed using SHA-256 before any checks
+- No plain text data is ever transmitted or stored
+- Blockchain ensures immutable breach records
+- Client-side hashing protects user privacy
+- Open source for transparency
+
+## 🌟 About Stellar
+
+Stellar is an open-source blockchain network designed for fast, low-cost transactions. Soroban is Stellar's smart contract platform, providing security and immutability for breach records.
 
 ---
 
-**Yapımcı**: Stellar Kumbara Ekibi  
-**Lisans**: MIT  
+**Creator**: DarkWeb3 Team  
+**License**: MIT  
 **Stellar**: [stellar.org](https://stellar.org)  
-**Freighter**: [freighter.app](https://www.freighter.app)
+**Purpose**: Helping users protect their digital identity

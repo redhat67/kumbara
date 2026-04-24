@@ -1,3 +1,3 @@
-module stellar-piggybank
+module darkweb3
 
 go 1.21
