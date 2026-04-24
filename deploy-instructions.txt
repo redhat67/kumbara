@@ -1,0 +1,25 @@
+🚀 STELLAR TESTNET'E HIZLI DEPLOY
+
+En Kolay Yöntem: Stellar IDE (Online)
+
+1. https://okashi.dev/ adresine gidin
+2. "New Project" > "Soroban Contract" seçin
+3. contract/src/lib.rs dosyasındaki kodu kopyalayıp yapıştırın
+4. "Build" butonuna tıklayın
+5. "Deploy to Testnet" butonuna tıklayın
+6. Freighter ile onaylayın
+7. Contract ID'yi kopyalayın
+
+Alternatif: Stellar Laboratory
+
+1. https://laboratory.stellar.org/#?network=testnet adresine gidin
+2. "Build Transaction" > "Invoke Host Function"
+3. WASM dosyasını yükleyin (derlenmesi gerekiyor)
+4. Deploy edin
+
+En Pratik: Remix benzeri Stellar IDE kullanın
+- https://okashi.dev/
+- https://ide.stellar.org/ (beta)
+
+NOT: Windows'ta Visual Studio Build Tools olmadan local deploy yapılamıyor.
+Docker Desktop'ı başlatıp tekrar deneyin veya online IDE kullanın.

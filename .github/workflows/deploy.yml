@@ -1,0 +1,68 @@
+name: Deploy to Stellar Testnet
+
+on:
+  workflow_dispatch:
+    inputs:
+      network:
+        description: 'Network to deploy to'
+        required: true
+        default: 'testnet'
+        type: choice
+        options:
+          - testnet
+          - mainnet
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: wasm32-unknown-unknown
+          override: true
+
+      - name: Install Soroban CLI
+        run: |
+          cargo install --locked soroban-cli --version 21.0.0
+
+      - name: Build Contract
+        run: |
+          cd contract
+          cargo build --target wasm32-unknown-unknown --release
+
+      - name: Deploy to Testnet
+        if: github.event.inputs.network == 'testnet'
+        run: |
+          # Generate identity
+          soroban keys generate deployer --network testnet
+          
+          # Fund account
+          soroban keys fund deployer --network testnet
+          
+          # Deploy contract
+          CONTRACT_ID=$(soroban contract deploy \
+            --wasm contract/target/wasm32-unknown-unknown/release/kumbara_contract.wasm \
+            --source deployer \
+            --network testnet)
+          
+          echo "Contract deployed!"
+          echo "CONTRACT_ID: $CONTRACT_ID"
+          echo "NETWORK: testnet"
+          echo "DATE: $(date)"
+          
+          # Save to file
+          echo "CONTRACT_ID=$CONTRACT_ID" >> deployment-info.txt
+          echo "NETWORK=testnet" >> deployment-info.txt
+          echo "DATE=$(date)" >> deployment-info.txt
+
+      - name: Upload deployment info
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-info
+          path: deployment-info.txt

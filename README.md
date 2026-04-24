@@ -29,12 +29,27 @@ Tarayıcınızda `http://localhost:8080` adresine gidin.
 
 ### Smart Contract Deploy
 
-Soroban kontratını deploy etmek için [DEPLOY.md](DEPLOY.md) dosyasına bakın.
+⚠️ **Windows Kullanıcıları**: Kontrat derlemek için Visual Studio Build Tools gereklidir.
 
+Detaylı deploy rehberi için:
+- [DEPLOY.md](DEPLOY.md) - Genel deploy adımları
+- [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md) - Windows kurulum ve detaylı bilgiler
+
+**Hızlı Deploy (Linux/Mac/WSL):**
 ```bash
+# Soroban CLI kur
+cargo install --locked soroban-cli
+rustup target add wasm32-unknown-unknown
+
+# Kontratı derle
 cd contract
 cargo build --target wasm32-unknown-unknown --release
-soroban contract deploy --wasm target/wasm32-unknown-unknown/release/kumbara_contract.wasm --network testnet
+
+# Deploy et
+soroban contract deploy \
+  --wasm target/wasm32-unknown-unknown/release/kumbara_contract.wasm \
+  --source kumbara \
+  --network testnet
 ```
 
 ## 📖 Kullanım
@@ -64,17 +79,18 @@ soroban contract deploy --wasm target/wasm32-unknown-unknown/release/kumbara_con
 
 ```
 stellar-piggybank/
-├── main.go           # Go web sunucusu
-├── go.mod            # Go modül dosyası
+├── main.go              # Go web sunucusu
+├── go.mod               # Go modül dosyası
 ├── static/
-│   ├── index.html    # Ana sayfa
-│   └── styles.css    # Stil dosyası
-├── contract/         # Soroban smart contract
+│   ├── index.html       # Ana sayfa
+│   └── styles.css       # Stil dosyası
+├── contract/            # Soroban smart contract
 │   ├── src/
-│   │   └── lib.rs    # Kumbara kontratı
-│   └── Cargo.toml    # Rust dependencies
-├── DEPLOY.md         # Deploy rehberi
-└── README.md         # Bu dosya
+│   │   └── lib.rs       # Kumbara kontratı (Rust)
+│   └── Cargo.toml       # Rust dependencies
+├── DEPLOY.md            # Genel deploy rehberi
+├── DEPLOYMENT_INFO.md   # Detaylı deployment bilgileri
+└── README.md            # Bu dosya
 ```
 
 ## 🎨 Tasarım
@@ -92,6 +108,8 @@ Gri tonlarında modern ve minimalist bir banka arayüzü. Gradient arka planlar,
 - Mainnet'te hesap aktifleştirmek için minimum 1 XLM gerekir
 - Testnet tamamen ücretsizdir ve test amaçlıdır
 - Freighter uzantısı yüklü olmalıdır
+- Smart contract deploy için Visual Studio Build Tools (Windows) veya GCC (Linux/Mac) gerekir
+- Kontrat tutarları stroops cinsinden (1 XLM = 10,000,000 stroops)
 
 ## 📜 Smart Contract Özellikleri
 
@@ -104,7 +122,15 @@ Soroban ile yazılmış kumbara kontratı:
 - ✅ Hedefe ulaşma kontrolü
 - ✅ Kullanıcı bazlı kumbara yönetimi
 
-Detaylı deploy bilgileri için [DEPLOY.md](DEPLOY.md) dosyasına bakın.
+**Kontrat Fonksiyonları:**
+- `initialize(owner, goal)` - Yeni kumbara oluştur
+- `deposit(owner, amount)` - Para yatır
+- `withdraw(owner, amount)` - Para çek
+- `get_balance(owner)` - Bakiye sorgula
+- `get_goal(owner)` - Hedef sorgula
+- `is_goal_reached(owner)` - Hedefe ulaşıldı mı?
+
+Detaylı deploy bilgileri için [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md) dosyasına bakın.
 
 ## 🌟 Stellar Hakkında
 
