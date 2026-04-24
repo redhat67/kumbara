@@ -3,7 +3,6 @@
 A decentralized data breach monitoring system built on Stellar blockchain. Check if your personal information has been compromised in known data breaches.
 
 ## ✨ Features
-
 - 🔐 **Privacy-First** - Only hashed data is stored and checked
 - 🌐 **Blockchain-Based** - Immutable breach records on Stellar
 - 🔍 **Instant Check** - Real-time breach detection
@@ -19,38 +18,22 @@ A decentralized data breach monitoring system built on Stellar blockchain. Check
 - Go 1.21 or higher
 - Modern web browser
 
-### Running
-
-```bash
-go run main.go
-```
-
-Open `http://localhost:8080` in your browser.
-
 ### Smart Contract Deploy
 
-⚠️ **Windows Kullanıcıları**: Kontrat derlemek için Visual Studio Build Tools gereklidir.
+<img width="1014" height="242" alt="image" src="https://github.com/user-attachments/assets/0ae13be4-bc6a-4525-af03-2bfa3b2859f9" />
 
-Detaylı deploy rehberi için:
-- [DEPLOY.md](DEPLOY.md) - Genel deploy adımları
-- [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md) - Windows kurulum ve detaylı bilgiler
+## Contract Information
 
-**Hızlı Deploy (Linux/Mac/WSL):**
-```bash
-# Soroban CLI kur
-cargo install --locked soroban-cli
-rustup target add wasm32-unknown-unknown
+**Contract ID (Testnet):** `CDWHSANVT5TT7OZSEEVUHMSHOSA22EKZP2TZEEFYBBQWSEXSBLBASU3P`
 
-# Kontratı derle
-cd contract
-cargo build --target wasm32-unknown-unknown --release
+**Network:** Stellar Testnet  
+**WASM Hash:** `56061b9018840a1080058d324dec6ea41c0cf21a346fd0025b92759f3f76b1d9`  
+**Contract Size:** 3,474 bytes  
+**Deployment Date:** April 25, 2026
 
-# Deploy et
-soroban contract deploy \
-  --wasm target/wasm32-unknown-unknown/release/kumbara_contract.wasm \
-  --source kumbara \
-  --network testnet
-```
+## What is DarkWeb3?
+
+DarkWeb3 is a decentralized security application built on the Stellar blockchain that allows users to check if their personal data (emails, usernames, passwords, etc.) has been compromised in known data breaches. The smart contract operates on a pay-per-query model, charging a small XLM fee for each breach check.
 
 ## 📖 Usage
 
